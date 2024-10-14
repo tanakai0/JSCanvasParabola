@@ -6,11 +6,13 @@
 </head>
 <body>
     <h1>Parabola Demo</h1>
-    <canvas id="parabola" width="400" height="400"></canvas>
+    <canvas id="canvas" width="600" height="600"></canvas>
     <script src="parabola.js"></script>
     <script>
         // Example of using the drawParabola function
-        drawParabola(ctx, 100, 100, 30, Math.PI / 4, -100, 100);
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+        drawParabola(ctx, 300, 300, 30, Math.PI/4, -100, 300, true);
     </script>
 </body>
 </html>
