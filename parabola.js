@@ -38,7 +38,6 @@ function drawParabola(ctx, x, y, a, rotation, startPos, endPos, counterclockwise
         };
     }
 
-
     // Draw parabola using quadratic Bezier curve
     // Note that the Bezier curve is affine invariant, meaning that an affine transformation of its control points produces 
     // the same result as constructing the curve first and then applying the transformation.
@@ -50,11 +49,6 @@ function drawParabola(ctx, x, y, a, rotation, startPos, endPos, counterclockwise
     startPoint = {x: startPos, y: parabola(startPos)};  
     endPoint = {x: endPos, y: parabola(endPos)};
     controlPoint = intersectionOfTangentLines(startPoint, endPoint, a);
-
-    console.log(startPoint);
-    console.log(controlPoint);
-    console.log(endPoint);
-    console.log(focus);
 
     // Rotation
     radian = counterclockwise ? -rotation : rotation; 
