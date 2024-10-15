@@ -18,15 +18,15 @@
         const canvas = document.getElementById("canvas");
         const ctx = canvas.getContext("2d");
         drawParabola(ctx, 100, 200, 10, 0);
-        drawParabola(ctx, 300, 100, 100, Math.PI, -200, 200);
+        drawParabola(ctx, 300, 50, 100, Math.PI, -200, 200);
         drawParabola(ctx, 300, 400, 30, Math.PI/4, -100, 300, true);
         
         // Another example.
-        // const N = 100;
-        // for (let i = 0; i < N; i++) {
-        //     const angle = (2 * Math.PI / N) * i;
-        //     drawParabola(ctx, 300, 300, 20, angle);
-        // }
+        const N = 100;
+        for (let i = 0; i < N; i++) {
+            const angle = (2 * Math.PI / N) * i;
+            drawParabola(ctx, 450, 250, 20, angle, 0, 80);
+        }
     </script>
 </body>
 </html>
