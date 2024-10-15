@@ -17,12 +17,28 @@
         // Example of using the drawParabola function.
         const canvas = document.getElementById("canvas");
         const ctx = canvas.getContext("2d");
+
+        // This parabola has its focus at (100, 200), with a focal length of 10. 
+        // There is no rotation applied (rotation angle is 0), meaning the parabola opens upwards along the y-axis.
+        // The drawing range will be automatically calculated to fit within the canvas since startPos and endPos are not specified.
         drawParabola(ctx, 100, 200, 10, 0);
+
+        // This parabola has its focus at (300, 50), with a focal length of 100.
+        // It is rotated by 180 degrees (π radians) around focus in a clockwise direction.
+        // The drawing range, from -200 to 200, corresponds to the segment parallel to the directrix of the parabola.
+        // The origin of the drawing range (0) represents the point where the line perpendicular to the directrix (passing through the focus) intersects the directrix itself.
         drawParabola(ctx, 300, 50, 100, Math.PI, -200, 200);
+
+        // This parabola has its focus at (300, 400), with a focal length of 30.
+        // It is rotated by 45 degrees (π/4 radians) around focus in a counterclockwise direction, as the counterclockwise parameter is set to true.
+        // The drawing range, from -100 to 300, corresponds to the segment parallel to the directrix of the parabola.
         drawParabola(ctx, 300, 400, 30, Math.PI/4, -100, 300, true);
         
-        // Another example.
-        const N = 100;
+        // Flower-like circular pattern centered at (450, 250) with a focal length of 20.
+        // The N parabolas are evenly distributed around 360 degrees, with each successive parabola rotated slightly by 2 * Math.PI / N.
+        // Each parabola has a range of 80 units on right side along the directrix.
+        // This forms a symmetrical, flower-like pattern because each parabola is rotated around the focus.
+        const N = 30;
         for (let i = 0; i < N; i++) {
             const angle = (2 * Math.PI / N) * i;
             drawParabola(ctx, 450, 250, 20, angle, 0, 80);
