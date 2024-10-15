@@ -46,16 +46,12 @@ function drawParabola(ctx, x, y, a, rotation, startPos = 0, endPos = 0, counterc
         };
     }
 
-    function distance(point1, point2) {
-        return Math.sqrt((point1.x ** 2 - point2.x ** 2) + (point1.y ** 2 - point2.y ** 2));
-    }
-
     // Function to calculate intersections of the parabola and line.
     // a: The focal length of the parabola, where the focus is located at (0, a) and the directrix at y = -a.
     // point1: A point passes through the line.
     // point2: Another point passes through the line. 
     function intersectionOfParabolaAndLine(a, point1, point2) {
-        const epsilon = 0.01;
+        const epsilon = 0.001;
         let intersections = [];
         const x1 = point1.x;
         const y1 = point1.y;
@@ -67,7 +63,7 @@ function drawParabola(ctx, x, y, a, rotation, startPos = 0, endPos = 0, counterc
         else {
             const slope = (y2 - y1) / (x2 - x1);
             const intercept = y1 - slope * x1;
-            const discriminant = 2 * a * (a * slope **2 + intercept);
+            const discriminant = 4 * a * (a * slope **2 + intercept);
             if (discriminant > 0) {
                 const xa = 2 * a * slope + Math.sqrt(discriminant);
                 const xb = 2 * a * slope - Math.sqrt(discriminant);
@@ -82,14 +78,15 @@ function drawParabola(ctx, x, y, a, rotation, startPos = 0, endPos = 0, counterc
         return intersections;
     }
 
-    // Function to calculate the cross product of vectors AB and AP
-    function calculateCrossProduct(A, B, P) {
-        return (B.x - A.x) * (P.y - A.y) - (B.y - A.y) * (P.x - A.x);
+    // Function to calculate the cross product of vectors p1p2 and p1p3.
+    function calculateCrossProduct(point1, point2, point3) {
+        return (point2.x - point1.x) * (point3.y - point1.y)
+             - (point2.y - point1.y) * (point3.x - point1.x);
     }
 
     // Filter the points in the rectangle whose corners are corner1, corner2, corner3, and corner4 (defined in cyclically order)
     function filterInRectangle(intersections, corner1, corner2, corner3, corner4) {
-        const epsilon = 1;
+        const epsilon = 0.001;
 
         return intersections.filter(point => {
             // Calculate the cross product for each edge and the point
@@ -97,10 +94,6 @@ function drawParabola(ctx, x, y, a, rotation, startPos = 0, endPos = 0, counterc
             const cross2 = calculateCrossProduct(corner2, corner3, point);
             const cross3 = calculateCrossProduct(corner3, corner4, point);
             const cross4 = calculateCrossProduct(corner4, corner1, point);
-            // console.log(cross1);
-            // console.log(cross2);
-            // console.log(cross3);
-            // console.log(cross4);
 
             // Check if all cross products are non-negative or non-positive (on the same side of all edges)
             return (cross1 >= - epsilon && cross2 >= - epsilon && cross3 >= - epsilon && cross4 >= - epsilon) ||
@@ -128,19 +121,12 @@ function drawParabola(ctx, x, y, a, rotation, startPos = 0, endPos = 0, counterc
         const topRightCorner    = {x: width, y:      0};
         const bottomLeftCorner  = {x:     0, y: height};
         const bottomRightCorner = {x: width, y: height};
-        console.log('bottomLeftCorner');
-        console.log(bottomLeftCorner);
-        console.log(bottomRightCorner);
         
         // Corners of the canvas frame before affine transformation of the parabola.
         const transformedTopLeftCorner =     rotate(translate(    topLeftCorner, - deltaX, - deltaY), focus, - radian);
         const transformedTopRightCorner =    rotate(translate(   topRightCorner, - deltaX, - deltaY), focus, - radian);
         const transformedBottomLeftCorner =  rotate(translate( bottomLeftCorner, - deltaX, - deltaY), focus, - radian);
         const transformedBottomRightCorner = rotate(translate(bottomRightCorner, - deltaX, - deltaY), focus, - radian);
-        
-        console.log('transformedBottomLeftCorner');
-        console.log(transformedBottomLeftCorner);
-        console.log(transformedBottomRightCorner);
 
         // Intersections of the parabola and transformed frame lines before affine transformation of the parabola.
         let intersections = [];
@@ -148,9 +134,7 @@ function drawParabola(ctx, x, y, a, rotation, startPos = 0, endPos = 0, counterc
         intersections.push(...intersectionOfParabolaAndLine(a, transformedBottomLeftCorner, transformedBottomRightCorner));
         intersections.push(...intersectionOfParabolaAndLine(a, transformedTopLeftCorner, transformedBottomLeftCorner));
         intersections.push(...intersectionOfParabolaAndLine(a, transformedTopRightCorner, transformedBottomRightCorner));
-        console.log(intersections);
         intersections = filterInRectangle(intersections, transformedTopLeftCorner, transformedTopRightCorner, transformedBottomRightCorner, transformedBottomLeftCorner);
-        console.log(intersections);
         startPoint = intersections.reduce((min, point) => {
             return point.x < min.x ? point : min;
         });
@@ -173,9 +157,6 @@ function drawParabola(ctx, x, y, a, rotation, startPos = 0, endPos = 0, counterc
     translatedStartPoint = translate(rotatedStartPoint, deltaX, deltaY);
     translatedControlPoint = translate(rotatedControlPoint, deltaX, deltaY);
     translatedEndPoint = translate(rotatedEndPoint, deltaX, deltaY);
-
-    console.log(translatedStartPoint);
-    console.log(translatedEndPoint);
 
     // Draw the parabola using quadratic Bezier curve.
     ctx.beginPath();
