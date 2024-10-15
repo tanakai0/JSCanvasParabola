@@ -3,16 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Parabola demo</title>
+    <style>
+        #canvas {
+            border: 2px solid black;
+        }
+    </style>
 </head>
 <body>
-    <h1>Parabola Demo</h1>
+    <h1>Parabola demo</h1>
     <canvas id="canvas" width="600" height="600"></canvas>
     <script src="parabola.js"></script>
     <script>
         // Example of using the drawParabola function
         const canvas = document.getElementById("canvas");
         const ctx = canvas.getContext("2d");
-        drawParabola(ctx, 300, 300, 30, Math.PI/4, -100, 300, true);
+        drawParabola(ctx, 200, 200, 10, Math.PI, -80, 80);
+        drawParabola(ctx, 400, 200, 10, Math.PI, 0, 0);
+        drawParabola(ctx, 300, 400, 30, Math.PI/4, -100, 300, true);
     </script>
 </body>
 </html>
