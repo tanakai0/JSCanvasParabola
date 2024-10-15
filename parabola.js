@@ -6,11 +6,14 @@ The parabola can be transformed with translation and rotation.
 @param {number} y - The y-axis (vertical) coordinate of the parabola's focus.
 @param {number} a - The focal length of the parabola, where the focus is located at (0, a) and the directrix at y = -a before any transformations. 
 @param {number} rotation - The angle of rotation around the focus, in radians.
-@param {number} startPos - Optional. The initial x-coordinate for drawing the parabola segment, before any transformations. Default is 0.
-@param {number} endPos - Optional. The final x-coordinate for drawing the parabola segment, before any transformations. Default is 0.
+@param {number} startPos - Optional. Default is 0. The initial x-coordinate for defining the portion of the parabola to draw, before any transformations are applied.
+                           After transformations, this corresponds to a distance along the directrix.
+                           The value 0 represents the point where the line perpendicular to the directrix, passing through the focus, intersects the directrix. 
+@param {number} endPos - Optional. Default is 0. The final x-coordinate for defining the portion of the parabola to draw, before any transformations. 
                          If startPos equals endPos, the range will be calculated automatically to fit the canvas.
-@param {boolean} counterclockwise - Optional. If true, the parabola is drawn counterclockwise; otherwise, it is drawn clockwise. Default is false.
+@param {boolean} counterclockwise - Optional. Default is false. If true, the parabola is drawn counterclockwise; otherwise, it is drawn clockwise. 
 */
+
 function drawParabola(ctx, x, y, a, rotation, startPos = 0, endPos = 0, counterclockwise = false) {
     
     // Function to calculate the y-coordinate of the parabola on the x-coordinate.
