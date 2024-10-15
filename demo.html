@@ -14,12 +14,19 @@
     <canvas id="canvas" width="600" height="600"></canvas>
     <script src="parabola.js"></script>
     <script>
-        // Example of using the drawParabola function
+        // Example of using the drawParabola function.
         const canvas = document.getElementById("canvas");
         const ctx = canvas.getContext("2d");
-        drawParabola(ctx, 200, 200, 10, Math.PI, -80, 80);
-        drawParabola(ctx, 400, 200, 10, 0, 0, 0);
+        drawParabola(ctx, 100, 200, 10, 0);
+        drawParabola(ctx, 300, 100, 100, Math.PI, -200, 200);
         drawParabola(ctx, 300, 400, 30, Math.PI/4, -100, 300, true);
+        
+        // Another example.
+        // const N = 100;
+        // for (let i = 0; i < N; i++) {
+        //     const angle = (2 * Math.PI / N) * i;
+        //     drawParabola(ctx, 300, 300, 20, angle);
+        // }
     </script>
 </body>
 </html>
