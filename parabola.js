@@ -1,15 +1,15 @@
 /*
 Draws a parabola on the canvas.
-The parabola is transformed including translation and rotation.
+The parabola can be transformed with translation and rotation.
 @param {CanvasRenderingContext2D} ctx - The rendering context for the canvas.
 @param {number} x - The x-axis (horizontal) coordinate of the parabola's focus.
 @param {number} y - The y-axis (vertical) coordinate of the parabola's focus.
-@param {number} a - The focal length of the parabola, where the focus is located at (0, a) and the directrix at y = -a before affine transformation. 
-@param {number} rotation - The rotation of the parabola around the focus, expressed in radians.
-@param {number} startPos - The starting x-coordinate on the x-axis for drawing the portion of the parabola before affine transformation. The default value is 0.
-@param {number} endPos - The ending x-coordinate on the x-axis for drawing the portion of the parabola before affine transformation. The default value is 0.
-                         If the startPos equals to endPos, this calculates its range automatically just fitted in the canvas.
-@param {bool} counterclockwise - An optional boolean value which, if true, draws the ellipse counterclockwise (anticlockwise). The default value is false (clockwise).
+@param {number} a - The focal length of the parabola, where the focus is located at (0, a) and the directrix at y = -a before any transformations. 
+@param {number} rotation - The angle of rotation around the focus, in radians.
+@param {number} startPos - Optional. The initial x-coordinate for drawing the parabola segment, before any transformations. Default is 0.
+@param {number} endPos - Optional. The final x-coordinate for drawing the parabola segment, before any transformations. Default is 0.
+                         If startPos equals endPos, the range will be calculated automatically to fit the canvas.
+@param {boolean} counterclockwise - Optional. If true, the parabola is drawn counterclockwise; otherwise, it is drawn clockwise. Default is false.
 */
 function drawParabola(ctx, x, y, a, rotation, startPos = 0, endPos = 0, counterclockwise = false) {
     
@@ -105,7 +105,7 @@ function drawParabola(ctx, x, y, a, rotation, startPos = 0, endPos = 0, counterc
     // Note that the Bezier curve is affine invariant, meaning that an affine transformation of its control points produces 
     // the same result as constructing the curve first and then applying the transformation.
     const focus = {x: 0, y: a};  // Focus of the parabola before affine transformation.
-    let startPoint, controlPoint, endPoint; // start point, control point and end point of the quadratic Bezier curve before affine transformation.
+    let startPoint, controlPoint, endPoint; // Start point, control point and end point of the quadratic Bezier curve before affine transformation.
     let rotatedStartPoint, rotatedControlPoint, rotatedEndPoint;  // Rotation.
     let translatedStartPoint, translatedControlPoint, translatedEndPoint;  // Rotation and translation.
     const radian = counterclockwise ? -rotation : rotation; // Radian for rotation.
