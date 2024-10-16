@@ -81,7 +81,7 @@ function drawParabola(ctx, x, y, a, rotation, startPos = 0, endPos = 0, counterc
     }
 
     // Function to calculate the cross product of vectors p1p2 and p1p3.
-    function calculateCrossProduct(point1, point2, point3) {
+    function crossProduct(point1, point2, point3) {
         return (point2.x - point1.x) * (point3.y - point1.y)
              - (point2.y - point1.y) * (point3.x - point1.x);
     }
@@ -90,10 +90,10 @@ function drawParabola(ctx, x, y, a, rotation, startPos = 0, endPos = 0, counterc
     function filterInRectangle(intersections, corner1, corner2, corner3, corner4, epsilon = 0.001) {
         return intersections.filter(point => {
             // Calculate the cross product for each edge and the point
-            const cross1 = calculateCrossProduct(corner1, corner2, point);
-            const cross2 = calculateCrossProduct(corner2, corner3, point);
-            const cross3 = calculateCrossProduct(corner3, corner4, point);
-            const cross4 = calculateCrossProduct(corner4, corner1, point);
+            const cross1 = crossProduct(corner1, corner2, point);
+            const cross2 = crossProduct(corner2, corner3, point);
+            const cross3 = crossProduct(corner3, corner4, point);
+            const cross4 = crossProduct(corner4, corner1, point);
 
             // Check if all cross products are non-negative or non-positive (on the same side of all edges)
             return (cross1 >= - epsilon && cross2 >= - epsilon && cross3 >= - epsilon && cross4 >= - epsilon) ||
@@ -125,17 +125,17 @@ function drawParabola(ctx, x, y, a, rotation, startPos = 0, endPos = 0, counterc
         const bottomRightCorner = {x: width, y: height};
         
         // Corners of the canvas frame before any transformations of the parabola.
-        const transformedTopLeftCorner =     rotate(translate(    topLeftCorner, - deltaX, - deltaY), focus, - radian);
-        const transformedTopRightCorner =    rotate(translate(   topRightCorner, - deltaX, - deltaY), focus, - radian);
-        const transformedBottomLeftCorner =  rotate(translate( bottomLeftCorner, - deltaX, - deltaY), focus, - radian);
+        const transformedTopLeftCorner     = rotate(translate(    topLeftCorner, - deltaX, - deltaY), focus, - radian);
+        const transformedTopRightCorner    = rotate(translate(   topRightCorner, - deltaX, - deltaY), focus, - radian);
+        const transformedBottomLeftCorner  = rotate(translate( bottomLeftCorner, - deltaX, - deltaY), focus, - radian);
         const transformedBottomRightCorner = rotate(translate(bottomRightCorner, - deltaX, - deltaY), focus, - radian);
 
         // Intersections of the parabola and transformed frame lines before any transformations of the parabola.
         let intersections = [];
-        intersections.push(...intersectionOfParabolaAndLine(a, transformedTopLeftCorner, transformedTopRightCorner, epsilon));
+        intersections.push(...intersectionOfParabolaAndLine(a,    transformedTopLeftCorner,    transformedTopRightCorner, epsilon));
         intersections.push(...intersectionOfParabolaAndLine(a, transformedBottomLeftCorner, transformedBottomRightCorner, epsilon));
-        intersections.push(...intersectionOfParabolaAndLine(a, transformedTopLeftCorner, transformedBottomLeftCorner, epsilon));
-        intersections.push(...intersectionOfParabolaAndLine(a, transformedTopRightCorner, transformedBottomRightCorner, epsilon));
+        intersections.push(...intersectionOfParabolaAndLine(a,    transformedTopLeftCorner,  transformedBottomLeftCorner, epsilon));
+        intersections.push(...intersectionOfParabolaAndLine(a,   transformedTopRightCorner, transformedBottomRightCorner, epsilon));
         // Select the points in the rectangle constructed from the frame lines.
         intersections = filterInRectangle(intersections, transformedTopLeftCorner, transformedTopRightCorner,
                                           transformedBottomRightCorner, transformedBottomLeftCorner, epsilon);
@@ -150,20 +150,20 @@ function drawParabola(ctx, x, y, a, rotation, startPos = 0, endPos = 0, counterc
     }
     else {  // When the drawing range is specified as parameters.
         startPoint = {x: startPos, y: parabola(startPos)};  
-        endPoint = {x: endPos, y: parabola(endPos)};
+        endPoint =   {x: endPos,   y: parabola(endPos)};
     }
     // The second control point of a quadratic Bezier curve is the intersection of the tangents to the first and third control points.
     controlPoint = intersectionOfTangentLines(startPoint, endPoint, a);
 
     // Rotate control points.
-    rotatedStartPoint = rotate(startPoint, focus, radian);
+    rotatedStartPoint   = rotate(startPoint,   focus, radian);
     rotatedControlPoint = rotate(controlPoint, focus, radian);
-    rotatedEndPoint = rotate(endPoint, focus, radian);
+    rotatedEndPoint     = rotate(endPoint,     focus, radian);
 
     // Translate control points.
-    translatedStartPoint = translate(rotatedStartPoint, deltaX, deltaY);
+    translatedStartPoint   = translate(rotatedStartPoint,   deltaX, deltaY);
     translatedControlPoint = translate(rotatedControlPoint, deltaX, deltaY);
-    translatedEndPoint = translate(rotatedEndPoint, deltaX, deltaY);
+    translatedEndPoint     = translate(rotatedEndPoint,     deltaX, deltaY);
 
     // Draw the parabola using quadratic Bezier curve.
     // The first and third control points are the endpoints of the Bezier curve, as well as the endpoints of the segment of the parabola.
